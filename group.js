@@ -27,29 +27,39 @@ Group.prototype = {
 	},
 	add: function(where, group, percentage){
 		var gid = group.id;
+		var obj = {'group':group, 'percentage': percentage, 'gid':gid};
 		switch(where){
 			case 'left':
-				this.leftSet.append({'group':group, 'percentage': percentage});
+				this.leftSet.append(obj);
 				break;
 			case 'right':
-				this.rightSet.append({'group':group, 'percentage': percentage});
+				this.rightSet.append(obj);
 				break;
 			case 'top':
-				this.topSet.append({'group':group, 'percentage': percentage});
+				this.topSet.append(obj);
 				break;
 			case 'bottom':
-				this.bottomSet.append({'group':group, 'percentage': percentage});
+				this.bottomSet.append(obj);
 				break;
 		}
 	},
-	getRandomTile: function(){
-		var idx = this.getRandomInt(0, this.tiles.length);
+	getTile: function(){
+		var idx = tessUtils.getRandomInt(0, this.tiles.length);
 		return this.tiles[idx];
 	},
-	getRandomInt: function(min, max) { 
-  		return Math.floor(Math.random() * (max - min)) + min;
+	generateLeft: function(){
+		this.generateGroup('left');
 	},
-	selectGroup: function(where){
+	generateRight: function(){
+		this.generateGroup('right');
+	},
+	generateAbove: function(){
+		this.generateGroup('top');
+	},
+	generateBelow: function(){
+		this.generateGroup('bottom');
+	},
+	generateGroup: function(where){
 		//select a group randomly, within defined probabilities
 		var set = null;
 
@@ -76,7 +86,7 @@ Group.prototype = {
 				seedArray.append(group.group); 
 			}
 		}
-		var idx = this.getRandomInt(0, seedArray.length);
+		var idx = tessUtils.getRandomInt(0, seedArray.length);
 		return seedArray[idx];
 	}
 };
