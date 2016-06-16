@@ -9,6 +9,9 @@ function Group(opts){
 }
 
 Group.prototype = {
+	getID: function(){
+		return this.id;
+	}
 	draw: function(){
 		var tile = this.getRandomTile();
 		tile.draw();
