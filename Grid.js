@@ -71,8 +71,10 @@ Grid.prototype = {
 		//get groups from below and left tiles
 		var groupBelow = this.tiles[y-1][x].getGroupID();
 		var groupLeft = this.tile[y][x-1].getGroupID();
+		var groups1 = groupBelow.getTopSet();
+		var groups2 = groupLeft.getRightSet();
 		//find a group that is allowable for both
-		var intersectGroup = this.findIntersectionGroup(groupBelow, groupLeft);
+		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
 		if (intersectGroup){
 			this.assignTileHelper(intersectGroup, x, y);
 		}
@@ -83,7 +85,9 @@ Grid.prototype = {
 	intersectBelowRight: function(group, x, y){
 		var groupAbove = this.tiles[y+1][x].getGroupID();
 		var groupLeft = this.tile[y][x-1].getGroupID();
-		var intersectGroup = this.findIntersectionGroup(groupAbove, groupLeft);
+		var groups1 = groupAbove.getBottomSet();
+		var groups2 = groupLeft.getRightSet();
+		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
 		if (intersectGroup){
 			this.assignTileHelper(intersectGroup, x, y);
 		}
@@ -94,7 +98,9 @@ Grid.prototype = {
 	intersectAboveLeft: function(group, x, y){
 		var groupBelow = this.tiles[y-1][x].getGroupID();
 		var groupRight = this.tile[y][x+1].getGroupID();
-		var intersectGroup = this.findIntersectionGroup(groupBelow, groupRight);
+		var group1 = groupBelow.getTopSet();
+		var group2 = groupRight.getLeftSet();
+		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
 		if (intersectGroup){
 			this.assignTileHelper(intersectGroup, x, y);
 		}
@@ -105,7 +111,9 @@ Grid.prototype = {
 	intersectBelowLeft: function(group, x, y){
 		var groupAbove = this.tiles[y+1][x].getGroupID();
 		var groupRight = this.tile[y][x+1].getGroupID();
-		var intersectGroup = this.findIntersectionGroup(groupAbove, groupRight);
+		var group1 = groupBelow.getBottomSet();
+		var group2 = groupRight.getLeftSet();
+		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
 		if (intersectGroup){
 			this.assignTileHelper(intersectGroup, x, y);
 		}
@@ -121,7 +129,17 @@ Grid.prototype = {
 		gs.setGroup(intersectGroup.getID());
 	},
 	findIntersectionGroup: function(groups1, groups2){
-		//select randomly from the groups in the intersection of 1 and 2
-	}
+		//get all groups that are present in both group lists
+		var intersection = groups1.filter(function(group) {
+			var gid = group.getID();
+			var idx = groups2.findIndex(function(group2){
+				return group2.getID() == gid;
+			});
+    		return idx != -1;
+		});
 
+		//select one of the results at random
+		var rand = tessUtils.getRandomInt(0, intersection.length);
+		return intersection[rand];
+	}
 };
