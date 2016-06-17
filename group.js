@@ -11,7 +11,19 @@ function Group(opts){
 Group.prototype = {
 	getID: function(){
 		return this.id;
-	}
+	},
+	getLeftSet: function(){
+		return this.leftSet;
+	},
+	getRightSet: function(){
+		return this.rightSet;
+	},
+	getTopSet: function(){
+		return this.topSet;
+	},
+	getBottomSet: function(){
+		return this.bottomSet;
+	},
 	draw: function(){
 		var tile = this.getRandomTile();
 		tile.draw();
