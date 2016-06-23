@@ -1,0 +1,35 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="test.css">
+    </head>
+    <body>
+        <div id="canvas">
+
+        </div>
+        <script src="Util.js"></script>
+        <script src="Tile.js"></script>
+        <script src="Group.js"></script>
+        <script src="GridSquare.js"></script>
+        <script src="Grid.js"></script>
+        <script>
+            var testGroup = [{
+                groupID:'test1',
+                tiles:[''],//will contain img src later
+                leftSet:['test1'],
+                rightSet:['test1'],
+                topSet:['test1'],
+                bottomSet:['test1']
+            }];
+
+            var Tess = new TessController(testGroup);
+            Tess.draw();
+        </script>
+    </body>
+</html>
