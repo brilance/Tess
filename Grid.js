@@ -2,7 +2,7 @@ function Grid(opts){
 	this.groups = opts.groups || [];
 	this.width = opts.width || 30;
 	this.height = opts.height || 30;
-	this.tiles = []; //TODO not an array of Tiles, change name to GridSquares
+	this.gridSquares = []; //TODO not an array of Tiles, change name to GridSquares
 	this.xTip = 0;
 	this.yTip = 0;
 }
@@ -30,9 +30,9 @@ Grid.prototype = {
 	initGrid: function(){
 		//set up inner array for each row
 		for (var y = 0; y < this.height; y++){
-			this.tiles[y] = [];
+			this.gridSquares[y] = [];
 			for (var x = 0; x < this.width; x++){
-				this.tiles[y][x] = new GridSquare();
+				this.gridSquares[y][x] = new GridSquare();
 			}
 		}
 	},
@@ -43,23 +43,23 @@ Grid.prototype = {
 		var seedTile = seedGroup.getTile();
 
 		//assign seed tile to the upper left corner
-		var gs = this.tiles[0][0];
+		var gs = this.gridSquares[0][0];
 		gs.setTile(seedTile);
 		gs.setGroup(seedGroup);
 	},
 	drawCorners: function(){
-		var gs = this.tiles[0][this.xTip];
+		var gs = this.gridSquares[0][this.xTip];
 		var group = gs.getGroup();
 		this.stepLeft(group, this.xTip, 0);
 
-		gs = this.tiles[this.yTip][0];
+		gs = this.gridSquares[this.yTip][0];
 		group = gs.getGroup();
 		this.stepRight(group, 0, this.yTip);
 
 		this.xTip++;
 		this.yTip++;
 	},
-	stepDiagonal: function(){
+	drawDiagonal: function(){
 		var x = this.xTip;
 		var y = this.yTip;
 		var num = y-1;
@@ -102,8 +102,8 @@ Grid.prototype = {
 		}
 	},*/
 	intersectBelowRight: function(x, y){
-		var groupAbove = this.tiles[y+1][x].getGroupID();
-		var groupLeft = this.tile[y][x-1].getGroupID();
+		var groupAbove = this.gridSquares[y+1][x].getGroupID();
+		var groupLeft = this.gridSquares[y][x-1].getGroupID();
 		var groups1 = groupAbove.getBottomSet();
 		var groups2 = groupLeft.getRightSet();
 		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
@@ -143,7 +143,7 @@ Grid.prototype = {
 	assignTileHelper: function(group, x, y){
 		//generate and assign tile
 		var tile = group.getTile();
-		var gs = this.tiles[y][x];
+		var gs = this.gridSquares[y][x];
 		gs.setTile(tile);
 		gs.setGroup(group.getID());
 	},
