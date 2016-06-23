@@ -1,5 +1,5 @@
 function TessController(groups){
-	if (groups.isArray){
+	if (Array.isArray(groups)){
 		this.inputGroups = groups;
 	}
 	else{
@@ -24,36 +24,38 @@ TessController.prototype = {
 		}
 	},
 	createGroups: function(){
+		var self = this;
 		this.inputGroups.forEach(function(group){
 			var opts = {id:group.id};
 			var tiles = [];
 			for (var x = 0; x < group.tiles.length; x++){
 				var tileObj = new Tile({img:group.tiles[x]});
-				tiles.append(tileObj);
+				tiles.push(tileObj);
 			}
 			opts.tiles = tiles;
 			var gObj = new Group(opts);
-			this.groups[group.id] = gObj;
+			self.groups[group.id] = gObj;
 		});
 	},
 	createRelationships: function(){
+		var self = this;
 		this.inputGroups.forEach(function(group){
-			var groupObj = this.groups[group.id];	
+			var groupObj = self.groups[group.id];	
 			var leftSet = [];
 			for (var x = 0; x < group.leftSet.length; x++){
-				leftSet.append(this.groups[group.leftSet[x]]);
+				leftSet.push(self.groups[group.leftSet[x]]);
 			}
 			var rightSet = [];
 			for (var x = 0; x < group.rightSet.length; x++){
-				rightSet.append(this.groups[group.rightSet[x]]);
+				rightSet.push(self.groups[group.rightSet[x]]);
 			}
 			var topSet = [];
 			for (var x = 0; x < group.topSet.length; x++){
-				topSet.append(this.groups[group.topSet[x]]);
+				topSet.push(self.groups[group.topSet[x]]);
 			}
 			var bottomSet = [];	
 			for (var x = 0; x < group.bottomSet.length; x++){
-				bottomSet.append(this.groups[group.bottomSet[x]]);
+				bottomSet.push(self.groups[group.bottomSet[x]]);
 			}
 			groupObj.leftSet = leftSet;
 			groupObj.rightSet = rightSet;
@@ -62,6 +64,10 @@ TessController.prototype = {
 		});
 	},
 	createGrid: function(){
-		this.grid = new Grid(this.groups);
+		var groupArr = [];
+		for (var group in this.groups){
+			groupArr.push(this.groups[group]);
+		}
+		this.grid = new Grid({groups:groupArr});
 	}
 };
