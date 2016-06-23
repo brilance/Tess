@@ -62,16 +62,16 @@ Group.prototype = {
 		return this.tiles[idx];
 	},
 	generateLeft: function(){
-		this.generateGroup('left');
+		return this.generateGroup('left');
 	},
 	generateRight: function(){
-		this.generateGroup('right');
+		return this.generateGroup('right');
 	},
 	generateAbove: function(){
-		this.generateGroup('top');
+		return this.generateGroup('top');
 	},
 	generateBelow: function(){
-		this.generateGroup('bottom');
+		return this.generateGroup('bottom');
 	},
 	generateGroup: function(where){
 		//select a group randomly, within defined probabilities

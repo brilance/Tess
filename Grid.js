@@ -52,7 +52,7 @@ Grid.prototype = {
 	drawCorners: function(){
 		var gs = this.gridSquares[0][this.xTip];
 		var group = gs.getGroup();
-		this.stepLeft(group, this.xTip, 0);
+		this.stepRight(group, this.xTip, 0);
 
 		gs = this.gridSquares[this.yTip][0];
 		group = gs.getGroup();
@@ -147,7 +147,7 @@ Grid.prototype = {
 		var tile = group.getTile();
 		var gs = this.gridSquares[y][x];
 		gs.setTile(tile);
-		gs.setGroup(group.getID());
+		gs.setGroup(group);
 	},
 	findIntersectionGroup: function(groups1, groups2){
 		//get all groups that are present in both group lists

@@ -43,19 +43,31 @@ TessController.prototype = {
 			var groupObj = self.groups[group.id];	
 
 			for (var x = 0; x < group.leftSet.length; x++){
-				groupObj.addLeft(group.leftSet[x]);
+				var gItem = group.leftSet[x];
+				var obj = self.groups[gItem.id];
+				obj.percentage = gItem.percentage;
+				groupObj.addLeft(obj);
 			}
 			var rightSet = [];
 			for (var x = 0; x < group.rightSet.length; x++){
-				groupObj.addRight(group.rightSet[x]);
+				gItem = group.rightSet[x];
+				obj = self.groups[gItem.id];
+				obj.percentage = gItem.percentage;
+				groupObj.addRight(obj);
 			}
 			var topSet = [];
 			for (var x = 0; x < group.topSet.length; x++){
-				groupObj.addAbove(group.topSet[x]);
+				gItem = group.topSet[x];
+				obj = self.groups[gItem.id];
+				obj.percentage = gItem.percentage;
+				groupObj.addAbove(obj);
 			}
 			var bottomSet = [];	
 			for (var x = 0; x < group.bottomSet.length; x++){
-				groupObj.addBelow(group.bottomSet[x]);
+				gItem = group.bottomSet[x];
+				obj = self.groups[gItem.id];
+				obj.percentage = gItem.percentage;
+				groupObj.addBelow(obj);
 			}
 		});
 	},
