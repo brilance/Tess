@@ -28,33 +28,32 @@ Group.prototype = {
 		var tile = this.getRandomTile();
 		tile.draw();
 	},
-	addLeft: function(group, percentage){
-		this.add('left', group, percentage);
+	addLeft: function(group){
+		this.add('left', group);
 	},
-	addRight: function(group, percentage){
-		this.add('right', group, percentage);
+	addRight: function(group){
+		this.add('right', group);
 	},
-	addAbove: function(group, percentage){
-		this.add('top', group, percentage);
+	addAbove: function(group){
+		this.add('top', group);
 	},
-	addBelow: function(group, percentage){
-		this.add('bottom', group, percentage);
+	addBelow: function(group){
+		this.add('bottom', group);
 	},
-	add: function(where, group, percentage){
-		var gid = group.id;
-		var obj = {'group':group, 'percentage': percentage, 'gid':gid};
+	add: function(where, group){
+		var obj = {'group':group, 'percentage': group.percentage, 'gid':group.id};
 		switch(where){
 			case 'left':
-				this.leftSet.append(obj);
+				this.leftSet.push(obj);
 				break;
 			case 'right':
-				this.rightSet.append(obj);
+				this.rightSet.push(obj);
 				break;
 			case 'top':
-				this.topSet.append(obj);
+				this.topSet.push(obj);
 				break;
 			case 'bottom':
-				this.bottomSet.append(obj);
+				this.bottomSet.push(obj);
 				break;
 		}
 	},
@@ -94,11 +93,12 @@ Group.prototype = {
 		}
 
 		var seedArray = [];
-		for (var group in set){
+		for (var i = 0; i < set.length; i++){
+			var group = set[i];
 			var perc = group.percentage;
 			for (var x = 0; x < perc; x++){
 				//the higher the percentage, the more entries for this group will be included
-				seedArray.append(group.group); 
+				seedArray.push(group.group); 
 			}
 		}
 		var idx = tessUtils.getRandomInt(0, seedArray.length);

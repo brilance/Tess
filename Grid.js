@@ -5,6 +5,8 @@ function Grid(opts){
 	this.gridSquares = []; //TODO not an array of Tiles, change name to GridSquares
 	this.xTip = 0;
 	this.yTip = 0;
+
+	this.initGrid();
 }
 
 Grid.prototype = {
@@ -54,7 +56,7 @@ Grid.prototype = {
 
 		gs = this.gridSquares[this.yTip][0];
 		group = gs.getGroup();
-		this.stepRight(group, 0, this.yTip);
+		this.stepBelow(group, 0, this.yTip);
 
 		this.xTip++;
 		this.yTip++;
@@ -72,19 +74,19 @@ Grid.prototype = {
 	},
 	stepRight: function(group, x, y){
 		var newGroup = group.generateRight();
-		this.assignTileHelper(x, y);
+		this.assignTileHelper(newGroup, x, y);
 	},
 	stepLeft: function(group, x, y){
 		var newGroup = group.generateLeft();
-		this.assignTileHelper(x, y);
+		this.assignTileHelper(newGroup, x, y);
 	},
 	stepAbove: function(group, x, y){
 		var newGroup = group.generateAbove();
-		this.assignTileHelper(x, y);
+		this.assignTileHelper(newGroup, x, y);
 	},
 	stepBelow: function(group, x, y){
 		var newGroup = group.generateBelow();
-		this.assignTileHelper(x, y);
+		this.assignTileHelper(newGroup, x, y);
 	},
 	/*intersectAboveRight: function(x, y){
 		//get groups from below and left tiles

@@ -41,26 +41,22 @@ TessController.prototype = {
 		var self = this;
 		this.inputGroups.forEach(function(group){
 			var groupObj = self.groups[group.id];	
-			var leftSet = [];
+
 			for (var x = 0; x < group.leftSet.length; x++){
-				leftSet.push(self.groups[group.leftSet[x]]);
+				groupObj.addLeft(group.leftSet[x]);
 			}
 			var rightSet = [];
 			for (var x = 0; x < group.rightSet.length; x++){
-				rightSet.push(self.groups[group.rightSet[x]]);
+				groupObj.addRight(group.rightSet[x]);
 			}
 			var topSet = [];
 			for (var x = 0; x < group.topSet.length; x++){
-				topSet.push(self.groups[group.topSet[x]]);
+				groupObj.addAbove(group.topSet[x]);
 			}
 			var bottomSet = [];	
 			for (var x = 0; x < group.bottomSet.length; x++){
-				bottomSet.push(self.groups[group.bottomSet[x]]);
+				groupObj.addBelow(group.bottomSet[x]);
 			}
-			groupObj.leftSet = leftSet;
-			groupObj.rightSet = rightSet;
-			groupObj.topSet = topSet;
-			groupObj.bottomSet = bottomSet;
 		});
 	},
 	createGrid: function(){

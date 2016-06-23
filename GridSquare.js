@@ -1,6 +1,6 @@
-function GridSquare(opts){
-	this.tile = opts.tile || null;
-	this.group = opts.group || null;
+function GridSquare(){
+	this.tile = null;
+	this.group = null;
 }
 
 GridSquare.prototype = {
@@ -9,6 +9,9 @@ GridSquare.prototype = {
 	},
 	setGroup: function(group){
 		this.group = group;
+	},
+	getGroup: function(){
+		return this.group;
 	},
 	getGroupID: function(){
 		return this.group.getID();
