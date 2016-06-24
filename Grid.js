@@ -1,7 +1,7 @@
 function Grid(opts){
 	this.groups = opts.groups || [];
-	this.width = opts.width || 30;
-	this.height = opts.height || 30;
+	this.width = opts.width || 10;
+	this.height = opts.height || 10;
 	this.gridSquares = []; //TODO not an array of Tiles, change name to GridSquares
 	this.xTip = 0;
 	this.yTip = 0;
@@ -11,23 +11,26 @@ function Grid(opts){
 
 Grid.prototype = {
 	draw: function(){
-		this.startDraw();
+		this.generateTiles();
+		
+	},
+	generateTiles: function(){
+		this.startGeneration();
 
 		//upper triangle
-		while (this.xTip < this.width && this.yTip < this.height){
-			this.drawCorners();
-			this.drawDiagonal();
+		while (this.xTip < this.width-1 && this.yTip < this.height-1){
+			this.generateCorners(0);
+			this.generateDiagonalDesc();
 		}
 
-		var temp = this.xTip;
-		this.xTip = this.yTip;
-		this.yTip = temp;
+		this.xTip = 0;
+		this.yTip = 0;
 
 		//lower triangle
-		while (this.xTip < this.width && this.yTip < this.height){
-			this.drawCorners();
-			this.drawDiagonal();
-		}		
+		while (this.xTip < this.width-1 && this.yTip < this.height-1){
+			this.generateCorners(this.width-1);
+			this.generateDiagonalAsc();
+		}	
 	},
 	initGrid: function(){
 		//set up inner array for each row
@@ -38,30 +41,29 @@ Grid.prototype = {
 			}
 		}
 	},
-	startDraw: function(){
+	startGeneration: function(){
 		//select a random group from all groups, and then a tile
 		var rand = tessUtils.getRandomInt(0, this.groups.length);
 		var seedGroup = this.groups[rand];
 		var seedTile = seedGroup.getTile();
 
 		//assign seed tile to the upper left corner
-		var gs = this.gridSquares[0][0];
+		var gs = this.gridSquares[this.yTip][this.xTip];
 		gs.setTile(seedTile);
 		gs.setGroup(seedGroup);
 	},
-	drawCorners: function(){
-		var gs = this.gridSquares[0][this.xTip];
+	generateCorners: function(baseline){
+		var gs = this.gridSquares[baseline][this.xTip];
 		var group = gs.getGroup();
-		this.stepRight(group, this.xTip, 0);
-
-		gs = this.gridSquares[this.yTip][0];
-		group = gs.getGroup();
-		this.stepBelow(group, 0, this.yTip);
-
+		this.stepRight(group, this.xTip, baseline);
 		this.xTip++;
+
+		gs = this.gridSquares[this.yTip][baseline];
+		group = gs.getGroup();
+		this.stepBelow(group, baseline, this.yTip);
 		this.yTip++;
 	},
-	drawDiagonal: function(){
+	generateDiagonalDesc: function(){
 		var x = this.xTip;
 		var y = this.yTip;
 		var num = y-1;
@@ -72,40 +74,28 @@ Grid.prototype = {
 			this.intersectBelowRight(x,y);
 		}
 	},
+	generateDiagonalAsc: function(){
+		var x = this.xTip;
+		var y = this.yTip;
+		var num = y-1;
+
+		for (var i = 0; i < num; i++){
+			y = y-1;
+			x = i+1;
+			this.intersectBelowRight(x,y);
+		}
+	},
 	stepRight: function(group, x, y){
 		var newGroup = group.generateRight();
-		this.assignTileHelper(newGroup, x, y);
-	},
-	stepLeft: function(group, x, y){
-		var newGroup = group.generateLeft();
-		this.assignTileHelper(newGroup, x, y);
-	},
-	stepAbove: function(group, x, y){
-		var newGroup = group.generateAbove();
-		this.assignTileHelper(newGroup, x, y);
+		this.assignTileHelper(newGroup, x+1, y);
 	},
 	stepBelow: function(group, x, y){
 		var newGroup = group.generateBelow();
-		this.assignTileHelper(newGroup, x, y);
+		this.assignTileHelper(newGroup, x, y+1);
 	},
-	/*intersectAboveRight: function(x, y){
-		//get groups from below and left tiles
-		var groupBelow = this.tiles[y-1][x].getGroupID();
-		var groupLeft = this.tile[y][x-1].getGroupID();
-		var groups1 = groupBelow.getTopSet();
-		var groups2 = groupLeft.getRightSet();
-		//find a group that is allowable for both
-		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
-		if (intersectGroup){
-			this.assignTileHelper(intersectGroup, x, y);
-		}
-		else{
-			//what should we do if there is no eligible group? nothing?
-		}
-	},*/
 	intersectBelowRight: function(x, y){
-		var groupAbove = this.gridSquares[y+1][x].getGroupID();
-		var groupLeft = this.gridSquares[y][x-1].getGroupID();
+		var groupAbove = this.gridSquares[y-1][x].getGroup();
+		var groupLeft = this.gridSquares[y][x-1].getGroup();
 		var groups1 = groupAbove.getBottomSet();
 		var groups2 = groupLeft.getRightSet();
 		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
@@ -116,32 +106,6 @@ Grid.prototype = {
 
 		}
 	},
-	/*intersectAboveLeft: function(x, y){
-		var groupBelow = this.tiles[y-1][x].getGroupID();
-		var groupRight = this.tile[y][x+1].getGroupID();
-		var group1 = groupBelow.getTopSet();
-		var group2 = groupRight.getLeftSet();
-		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
-		if (intersectGroup){
-			this.assignTileHelper(intersectGroup, x, y);
-		}
-		else{
-
-		}
-	},*/
-	/*intersectBelowLeft: function(x, y){
-		var groupAbove = this.tiles[y+1][x].getGroupID();
-		var groupRight = this.tile[y][x+1].getGroupID();
-		var group1 = groupBelow.getBottomSet();
-		var group2 = groupRight.getLeftSet();
-		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
-		if (intersectGroup){
-			this.assignTileHelper(intersectGroup, x, y);
-		}
-		else{
-
-		}
-	},*/
 	assignTileHelper: function(group, x, y){
 		//generate and assign tile
 		var tile = group.getTile();
@@ -152,15 +116,15 @@ Grid.prototype = {
 	findIntersectionGroup: function(groups1, groups2){
 		//get all groups that are present in both group lists
 		var intersection = groups1.filter(function(group) {
-			var gid = group.getID();
+			var gid = group.group.getID();
 			var idx = groups2.findIndex(function(group2){
-				return group2.getID() == gid;
+				return group2.group.getID() == gid;
 			});
     		return idx != -1;
 		});
 
 		//select one of the results at random
 		var rand = tessUtils.getRandomInt(0, intersection.length);
-		return intersection[rand];
+		return intersection[rand].group;
 	}
 };
