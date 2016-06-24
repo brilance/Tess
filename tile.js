@@ -7,15 +7,16 @@ function Tile(opts){
 }
 
 Tile.prototype = {
-	draw: function(document, ycoord, xcoord){
-		var tmpl = this.imgTmpl.replace('{1}', ycoord);
+	draw: function(ycoord, xcoord){
+		/*var tmpl = this.imgTmpl.replace('{1}', ycoord);
 		tmpl = tmpl.replace('{2}', xcoord);
-		document.write(tmpl);
+		document.write(tmpl);*/
+		this.drawTest(ycoord, xcoord);
 	},
-	drawTest: function(document, ycoord, xcoord){
+	drawTest: function(ycoord, xcoord){
 		var tmpl = "<div class='tile' style='top:{1}px;left:{2}px;'></div>";
-		tmpl = this.imgTmpl.replace('{1}', ycoord);
-		tmpl = tmpl.replace('{2}', xcoord);
+		tmpl = tmpl.replace('{1}', ycoord*this.height);
+		tmpl = tmpl.replace('{2}', xcoord*this.width);
 		document.write(tmpl);
 	}
 };

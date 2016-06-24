@@ -12,7 +12,14 @@ function Grid(opts){
 Grid.prototype = {
 	draw: function(){
 		this.generateTiles();
-		
+		this.drawTiles();
+	},
+	drawTiles: function(){
+		for (var y = 0; y < this.height; y++){
+			for (var x = 0; x < this.width; x++){
+				this.gridSquares[y][x].draw(x,y);
+			}
+		}
 	},
 	generateTiles: function(){
 		this.startGeneration();
@@ -75,14 +82,12 @@ Grid.prototype = {
 		}
 	},
 	generateDiagonalAsc: function(){
-		var x = this.xTip;
-		var y = this.yTip;
-		var num = y-1;
+		var y = this.height;
+		var num = this.width-1;
 
-		for (var i = 0; i < num; i++){
+		for (var i = this.xTip; i < num; i++){
 			y = y-1;
-			x = i+1;
-			this.intersectBelowRight(x,y);
+			this.intersectBelowRight(i,y);
 		}
 	},
 	stepRight: function(group, x, y){

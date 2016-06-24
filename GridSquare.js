@@ -15,5 +15,10 @@ GridSquare.prototype = {
 	},
 	getGroupID: function(){
 		return this.group.getID();
+	},
+	draw: function(x,y){
+		if (this.tile){
+			this.tile.draw(x,y);
+		}
 	}
 };

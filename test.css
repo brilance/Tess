@@ -1,4 +1,11 @@
+#canvas{
+	position:relative;
+	width:100px;
+	height:100px;
+}
 div.tile{
 	position:absolute;
 	background-color:#000;
+	width:10px;
+	height:10px;
 }
