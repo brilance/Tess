@@ -1,8 +1,8 @@
 function Grid(opts){
 	this.groups = opts.groups || [];
-	this.width = opts.width || 10;
-	this.height = opts.height || 10;
-	this.gridSquares = []; //TODO not an array of Tiles, change name to GridSquares
+	this.width = opts.width || 50;
+	this.height = opts.height || 50;
+	this.gridSquares = [];
 	this.xTip = 0;
 	this.yTip = 0;
 
@@ -35,7 +35,7 @@ Grid.prototype = {
 
 		//lower triangle
 		while (this.xTip < this.width-1 && this.yTip < this.height-1){
-			this.generateCorners(this.width-1);
+			this.generateCornersBelow(this.width-1);
 			this.generateDiagonalAsc();
 		}	
 	},

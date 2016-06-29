@@ -29,7 +29,7 @@ TessController.prototype = {
 			var opts = {id:group.id};
 			var tiles = [];
 			for (var x = 0; x < group.tiles.length; x++){
-				var tileObj = new Tile({img:group.tiles[x]});
+				var tileObj = new Tile({className:group.tiles[x]});
 				tiles.push(tileObj);
 			}
 			opts.tiles = tiles;

@@ -21,12 +21,52 @@
         <script src="TessController.js"></script>
         <script>
             var testGroup = [{
-                id:'test1',
-                tiles:[''],//will contain img src later
-                leftSet:[{id:'test1', percentage:100}],
-                rightSet:[{id:'test1', percentage:100}],
-                topSet:[{id:'test1', percentage:100}],
-                bottomSet:[{id:'test1', percentage:100}]
+                id:'black1',
+                tiles:['black1'],
+                leftSet:[{id:'black1', percentage:60}, {id:'black2', percentage:40}],
+                rightSet:[{id:'black1', percentage:60}, {id:'black2', percentage:40}],
+                topSet:[{id:'black1', percentage:60}, {id:'black2', percentage:40}],
+                bottomSet:[{id:'black1', percentage:60}, {id:'black2', percentage:40}]
+            },
+            {
+                id:'black2',
+                tiles:['black2'],
+                leftSet:[{id:'black1', percentage:30}, {id:'black2', percentage:40}, {id:'black3', percentage:30}],
+                rightSet:[{id:'black1', percentage:30}, {id:'black2', percentage:40}, {id:'black3', percentage:30}],
+                topSet:[{id:'black1', percentage:30}, {id:'black2', percentage:40}, {id:'black3', percentage:30}],
+                bottomSet:[{id:'black1', percentage:30}, {id:'black2', percentage:40}, {id:'black3', percentage:30}]
+            },
+            {
+                id:'black3',
+                tiles:['black3'],
+                leftSet:[{id:'black2', percentage:30}, {id:'black3', percentage:40},{id:'white3',percentage:30}],
+                rightSet:[{id:'black2', percentage:30}, {id:'black3', percentage:40},{id:'white3',percentage:30}],
+                topSet:[{id:'black2', percentage:30}, {id:'black3', percentage:40},{id:'white3',percentage:30}],
+                bottomSet:[{id:'black2', percentage:30}, {id:'black3', percentage:40},{id:'white3',percentage:30}]
+            },
+            {
+                id:'white3',
+                tiles:['white3'],
+                leftSet:[{id:'black3', percentage:30}, {id:'white3', percentage:40},{id:'white2',percentage:30}],
+                rightSet:[{id:'black3', percentage:30}, {id:'white3', percentage:40},{id:'white2',percentage:30}],
+                topSet:[{id:'black3', percentage:30}, {id:'white3', percentage:40},{id:'white2',percentage:30}],
+                bottomSet:[{id:'black3', percentage:30}, {id:'white3', percentage:40},{id:'white2',percentage:30}]
+            },
+            {
+                id:'white2',
+                tiles:['white2'],
+                leftSet:[{id:'white3', percentage:30}, {id:'white2', percentage:40},{id:'white1',percentage:30}],
+                rightSet:[{id:'white3', percentage:30}, {id:'white2', percentage:40},{id:'white1',percentage:30}],
+                topSet:[{id:'white3', percentage:30}, {id:'white2', percentage:40},{id:'white1',percentage:30}],
+                bottomSet:[{id:'white3', percentage:30}, {id:'white2', percentage:40},{id:'white1',percentage:30}]
+            },
+            {
+                id:'white1',
+                tiles:['white1'],
+                leftSet:[{id:'white2', percentage:40}, {id:'white1', percentage:60}],
+                rightSet:[{id:'white2', percentage:40}, {id:'white1', percentage:60}],
+                topSet:[{id:'white2', percentage:40}, {id:'white1', percentage:60}],
+                bottomSet:[{id:'white2', percentage:40}, {id:'white1', percentage:60}]
             }];
 
             var Tess = new TessController(testGroup);

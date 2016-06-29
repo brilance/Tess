@@ -1,7 +1,7 @@
 function Tile(opts){
-	this.img = opts.img;
+	this.className = opts.className;
 	//stylesheet to specify absolute positioning
-	this.imgTmpl = "<img src='" + this.img + "' style='top:{1}px;left:{2}px;'/>";
+	this.tmpl = "<div class='tile {3}' style='top:{1}px;left:{2}px;'></div>";
 	this.width = 10;
 	this.height = 10;
 }
@@ -14,9 +14,9 @@ Tile.prototype = {
 		this.drawTest(ycoord, xcoord);
 	},
 	drawTest: function(ycoord, xcoord){
-		var tmpl = "<div class='tile' style='top:{1}px;left:{2}px;'></div>";
-		tmpl = tmpl.replace('{1}', ycoord*this.height);
+		var tmpl = this.tmpl.replace('{1}', ycoord*this.height);
 		tmpl = tmpl.replace('{2}', xcoord*this.width);
+		tmpl = tmpl.replace('{3}', this.className);
 		document.write(tmpl);
 	}
 };

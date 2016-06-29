@@ -5,7 +5,24 @@
 }
 div.tile{
 	position:absolute;
-	background-color:#000;
 	width:10px;
 	height:10px;
+}
+div.white1{
+	background-color:#fff;
+}
+div.white2{
+	background-color:#eee;
+}
+div.white3{
+	background-color:#ddd;
+}
+div.black1{
+	background-color:#000;
+}
+div.black2{
+	background-color:#222;
+}
+div.black3{
+	background-color:#444;
 }
