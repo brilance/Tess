@@ -70,6 +70,19 @@ Grid.prototype = {
 		this.stepBelow(group, baseline, this.yTip);
 		this.yTip++;
 	},
+	generateCornersBelow: function(baseline){
+		this.xTip++;
+		this.yTip++;
+
+		var gs = this.gridSquares[baseline][this.xTip];
+		var group = gs.getGroup();
+		this.intersectBelowRight(this.xTip, baseline);
+		//this.stepRight(group, this.xTip, baseline);
+		
+		gs = this.gridSquares[this.yTip][baseline];
+		group = gs.getGroup();
+		this.intersectBelowRight(baseline, this.yTip);
+	},
 	generateDiagonalDesc: function(){
 		var x = this.xTip;
 		var y = this.yTip;
