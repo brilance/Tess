@@ -5,8 +5,8 @@
 }
 div.tile{
 	position:absolute;
-	width:10px;
-	height:10px;
+	width:2px;
+	height:2px;
 }
 div.white1{
 	background-color:#fff;

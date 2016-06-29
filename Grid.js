@@ -1,18 +1,44 @@
 function Grid(opts){
 	this.groups = opts.groups || [];
-	this.width = opts.width || 50;
-	this.height = opts.height || 50;
-	this.gridSquares = [];
+	this.width = opts.width || 100;
+	this.height = opts.height || 100;
+	this.gridSquares = this.initGrid();
 	this.xTip = 0;
 	this.yTip = 0;
-
-	this.initGrid();
 }
 
 Grid.prototype = {
+	initGrid: function(){
+		var arr = [];
+		//set up inner array for each row
+		for (var y = 0; y < this.height; y++){
+			arr[y] = [];
+			for (var x = 0; x < this.width; x++){
+				arr[y][x] = new GridSquare();
+			}
+		}
+		return arr;
+	},
 	draw: function(){
+		var self = this;
+
 		this.generateTiles();
 		this.drawTiles();
+
+		var x = 1000;
+		
+		var timer = window.setInterval(function(){
+			x--;
+			if (x){
+				self.clearGrid();
+				self.shiftTiles();
+				self.generateOuterRows();
+				self.drawTiles();
+			}
+		}, 500);
+	},
+	clearGrid: function(){
+		$("#canvas").empty();
 	},
 	drawTiles: function(){
 		for (var y = 0; y < this.height; y++){
@@ -20,6 +46,41 @@ Grid.prototype = {
 				this.gridSquares[y][x].draw(x,y);
 			}
 		}
+	},
+	shiftTiles: function(){
+		var newGrid = this.initGrid();
+		for (var y = this.height-2; y >= 0; y--){
+			for (var x = this.width-2; x >= 0; x--){
+				var obj = this.gridSquares[y][x];
+				newGrid[y+1][x+1] = obj;
+			}
+		}
+		this.gridSquares = newGrid;
+	},
+	generateOuterRows: function(){
+		this.xTip = this.width-1;
+		this.yTip = 1;
+
+		var gs = this.gridSquares[1][this.xTip];
+		var group = gs.getGroup();
+		this.stepAbove(group,this.xTip, 1);
+		this.xTip--;
+
+		while (this.xTip){
+			this.intersectAboveLeft(this.xTip, 0);
+			this.xTip--;
+		}
+
+		//corner
+		var gs = this.gridSquares[0][1];
+		var group = gs.getGroup();
+		this.stepLeft(group,1,0);
+
+		while (this.yTip < this.height){
+			this.intersectBelowLeft(0, this.yTip);
+			this.yTip++;
+		}
+
 	},
 	generateTiles: function(){
 		this.startGeneration();
@@ -38,15 +99,6 @@ Grid.prototype = {
 			this.generateCornersBelow(this.width-1);
 			this.generateDiagonalAsc();
 		}	
-	},
-	initGrid: function(){
-		//set up inner array for each row
-		for (var y = 0; y < this.height; y++){
-			this.gridSquares[y] = [];
-			for (var x = 0; x < this.width; x++){
-				this.gridSquares[y][x] = new GridSquare();
-			}
-		}
 	},
 	startGeneration: function(){
 		//select a random group from all groups, and then a tile
@@ -107,15 +159,49 @@ Grid.prototype = {
 		var newGroup = group.generateRight();
 		this.assignTileHelper(newGroup, x+1, y);
 	},
+	stepLeft: function(group, x, y){
+		var newGroup = group.generateLeft();
+		this.assignTileHelper(newGroup, x-1, y);
+	},
 	stepBelow: function(group, x, y){
 		var newGroup = group.generateBelow();
 		this.assignTileHelper(newGroup, x, y+1);
+	},
+	stepAbove: function(group, x, y){
+		var newGroup = group.generateAbove();
+		this.assignTileHelper(newGroup, x, y-1);
 	},
 	intersectBelowRight: function(x, y){
 		var groupAbove = this.gridSquares[y-1][x].getGroup();
 		var groupLeft = this.gridSquares[y][x-1].getGroup();
 		var groups1 = groupAbove.getBottomSet();
 		var groups2 = groupLeft.getRightSet();
+		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
+		if (intersectGroup){
+			return this.assignTileHelper(intersectGroup, x, y);
+		}
+		else{
+
+		}
+	},
+	intersectAboveLeft: function(x, y){
+		var groupBelow = this.gridSquares[y+1][x].getGroup();
+		var groupRight = this.gridSquares[y][x+1].getGroup();
+		var groups1 = groupBelow.getTopSet();
+		var groups2 = groupRight.getLeftSet();
+		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
+		if (intersectGroup){
+			this.assignTileHelper(intersectGroup, x, y);
+		}
+		else{
+
+		}
+	},
+	intersectBelowLeft: function(x, y){
+		var groupAbove = this.gridSquares[y-1][x].getGroup();
+		var groupRight = this.gridSquares[y][x+1].getGroup();
+		var groups1 = groupAbove.getBottomSet();
+		var groups2 = groupRight.getLeftSet();
 		var intersectGroup = this.findIntersectionGroup(groups1, groups2);
 		if (intersectGroup){
 			this.assignTileHelper(intersectGroup, x, y);
